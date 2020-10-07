@@ -37,8 +37,23 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+const DASH = "11"
+const DOT = "10"
+
 function decode(expr) {
-    // write your solution here
+    let padding = expr.length % 10
+    if (padding) 
+        expr = "0".repeat(padding) + expr
+    let result = ""
+    expr.match(/.{1,10}/g).forEach(s => {
+        if (s.includes("*")) {
+            return result += " "
+        }
+        const trim = s.slice(s.indexOf("1"), s.length)
+        const morzed = trim.match(/.{1,2}/g).map(t => t === DASH ? "-" : ".").join("")
+        result += MORSE_TABLE[morzed]
+    })
+    return result
 }
 
 module.exports = {
